@@ -1,0 +1,46 @@
+Name,Gender,Marriage Candidate,Giftable,Heart Events
+Alex,Male,Yes,Yes,8
+Elliot,Male,Yes,Yes,7
+Harvey,Male,Yes,Yes,7
+Sam,Male,Yes,Yes,8
+Sebastian,Male,Yes,Yes,7
+Shane,Male,Yes,Yes,12
+Abigail,Female,Yes,Yes,8
+Emily,Female,Yes,Yes,10
+Haley,Female,Yes,Yes,7
+Leah,Female,Yes,Yes,10
+Maru,Female,Yes,Yes,7
+Penny,Female,Yes,Yes,7
+Caroline,Female,No,Yes,5
+Clint,Male,No,Yes,5
+Demetrius,Male,No,Yes,4
+Dwarf,N/A,No,Yes,1
+Evelyn,Female,No,Yes,3
+George,Male,No,Yes,4
+Gus,Male,No,Yes,5
+Jas,Female,No,Yes,1
+Jodi,Female,No,Yes,5
+Kent,Male,No,Yes,4
+Krobus,N/A,No,Yes,2
+Leo,Male,No,Yes,6
+Lewis,Male,No,Yes,4
+Linus,Male,No,Yes,6
+Marnie,Female,No,Yes,5
+Pam,Female,No,Yes,4
+Pierre,Male,No,Yes,3
+Robin,Female,No,Yes,3
+Sandy,Female,No,Yes,2
+Vincent,Male,No,Yes,1
+Willy,Male,No,Yes,5
+Wizard,Male,No,Yes,2
+Birdie,Female,No,No,0
+Bouncer,Male,No,No,0
+Gil,Male,No,No,0
+Governor,Male,No,No,0
+Grandpa,Male,No,No,0
+Gunther,Male,No,No,0
+Henchman,N/A,No,No,0
+Marlon,Male,No,No,0
+Morris,Male,No,No,0
+Mr. Qi,Male,No,No,0
+Professor Snail,Male,No,No,0
