@@ -22,7 +22,8 @@ crab_pots <- read_csv("data/crabpotandothercatchables.csv",
                       skip = 2,
                       show_col_types = FALSE) %>%
   clean_names()
-fish_detail <- read_csv("data/fish_detail.csv", show_col_types = FALSE)
+fish_detail <- read_csv("data/fish_detail.csv", show_col_types = FALSE) %>%
+  clean_names()
 fish_price <- read_csv("data/fish_price_breakdown.csv", show_col_types = FALSE)
 legendary_fish_detail <- read_csv("data/legendary_fish_detail.csv", show_col_types = FALSE)
 legendary_fish_price <- read_csv("data/legendary_fish_price_breakdown.csv", show_col_types = FALSE)
@@ -95,11 +96,18 @@ crab_pots_and_images <- crab_pots %>%
   mutate(across(contains("size"), ~ifelse(is.na(.), 1, .))) %>%
   left_join(crab_pot_images, by = "name")
 
+# Background image: Skip for now
+# crab_pot_pic <- "images/backgrounds/Crab_Pot.png"
+# img <- png::readPNG(crab_pot_pic)
+# g <- grid::rasterGrob(img, width=unit(1,"npc"), height=unit(1,"npc"), interpolate = FALSE,
+#                       gp = grid::gpar(alpha = 0.1))
+
 # Plot szn shortly!
 # I want to make a vertical bar plot essentially, replacing the bar with these images and scaling size
 # to be max - min size
 crab_pots_and_images %>%
   ggplot(aes(y = name)) +
+  #annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) + 
   geom_image(aes(x = min_size, image = file_names), size = 0.05) +
   geom_image(aes(x = max_size, image = file_names), size = 0.1) + 
   geom_segment(aes(x = min_size + 0.5, xend = max_size - 0.5, y = name, yend = name),
@@ -107,3 +115,51 @@ crab_pots_and_images %>%
   theme_bw() +
   xlab("Range of Sizes (Inches)") +
   ylab("Crab Pot Bounty")
+
+
+# Lets just move on to the next dataset
+# Fish Detail!
+fish_detail %>% View()
+
+# I think it'd be cool to see fish difficulty by location
+# River, Ocean, Lake, Other will be the selections
+fish_detail <- fish_detail %>%
+  mutate(primary_location = case_when(
+    stringr::str_detect(location, "[Rr]iver") ~ "river",
+    stringr::str_detect(location, "[Oo]cean") ~ "ocean",
+    stringr::str_detect(location, "[Ll]ake") ~ "lake",
+    TRUE ~ "other"
+  )) %>%
+  separate(difficulty_behavior, into = c("difficulty", "behaviour"), sep = " ") %>%
+  mutate(difficulty = as.numeric(difficulty))
+
+# Organize by ascending difficulty
+fish_detail <- fish_detail %>%
+  group_by(primary_location) %>%
+  arrange(difficulty) %>%
+  mutate(rank = row_number())
+
+# Fish images
+fish_images <- tibble(file_names = list.files("images/fish", full.names=TRUE)) %>%
+  mutate(name = stringr::str_remove(
+    stringr::str_replace(
+      stringr::str_extract(
+        file_names, "[A-z_]+\\.png"
+      ), "_", " "
+    ), "\\.png" 
+  )
+  )
+
+fish_detail <- fish_detail %>%
+  left_join(fish_images, by = "name")
+
+# Time to plot!
+fish_detail %>%
+  ggplot(aes(x = rank, y = difficulty)) +
+  geom_image(aes(image = file_names), size = 0.1) +
+  theme_bw() +
+  xlab("Difficulty Rank") +
+  ylab("Difficulty") +
+  facet_wrap(~primary_location)
+
+# Too tight, would want to space this out a little more
